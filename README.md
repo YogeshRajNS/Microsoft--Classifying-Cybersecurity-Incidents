@@ -1,107 +1,82 @@
-🛡️ Cybersecurity Incident Classification with Machine Learning
-This repository presents a machine learning-based solution for classifying cybersecurity incidents into three categories: True Positive (TP), Benign Positive (BP), and False Positive (FP). Leveraging the Microsoft GUIDE dataset, the system is designed to assist Security Operations Centers (SOCs) in automating incident triage, reducing manual overhead, and improving threat response accuracy.
+# 🛡️ Cybersecurity Incident Classification Using Machine Learning
 
-🔍 Project Highlights
-🔧 Data Preprocessing & Feature Engineering
-Removed features with more than 50% missing values.
+This project implements a robust machine learning pipeline to classify cybersecurity incidents into three classes: **True Positive (TP)**, **Benign Positive (BP)**, and **False Positive (FP)**. It leverages the Microsoft GUIDE dataset to support **Security Operation Centers (SOCs)** in automating incident triage and improving threat detection workflows.
 
-Extracted temporal features such as hour, day, and month from timestamp fields.
+---
 
-Encoded categorical variables using LabelEncoder.
+## 📌 Overview
 
-Eliminated highly correlated features to reduce redundancy.
+- **Dataset**: Microsoft GUIDE dataset (processed into `traindata_processed.csv` and `testdata_processed.csv`)
+- **Goal**: Accurately classify incident outcomes to reduce false positives and streamline security operations.
+- **Tech Stack**: Python, Scikit-learn, XGBoost, LightGBM, SHAP, Pandas, Seaborn, Matplotlib
 
-Handled missing and duplicate entries to ensure clean and reliable datasets.
+---
 
-🤖 Model Development & Optimization
-Baseline Models: Logistic Regression, Decision Tree.
+## 🔄 Workflow
 
-Advanced Models: Random Forest, Gradient Boosting, XGBoost, LightGBM.
+### 1. 📊 Data Preprocessing
+- Removed features with >50% missing values.
+- Converted timestamp into `hour`, `day`, and `month` features.
+- Encoded categorical variables using `LabelEncoder`.
+- Dropped highly correlated features to improve model performance.
+- Cleaned missing values and removed duplicates.
 
-Imbalance Handling: Applied SMOTE and adjusted class weights to tackle label imbalance.
+### 2. 📈 Exploratory Data Analysis (EDA)
+- Visualized class distributions by time (hour, day, month).
+- Identified and visualized class imbalance in TP/BP/FP labels.
+- Created a correlation heatmap to identify redundant features.
 
-Hyperparameter Tuning: Used RandomizedSearchCV for tuning key model parameters such as max_depth, learning_rate, and n_estimators.
+### 3. 🧠 Model Development
+- **Baseline Models**: Logistic Regression, Decision Tree
+- **Advanced Models**: Random Forest, Gradient Boosting, XGBoost, LightGBM
+- **Imbalance Handling**: SMOTE and class-weight adjustments
+- **Hyperparameter Tuning**: Used `RandomizedSearchCV` for XGBoost
 
-📈 Model Evaluation & Explainability
-Evaluation Metrics: Macro F1-Score, Precision, Recall.
+### 4. 🧠 Feature Importance
+- Applied **SHAP** to determine key influencing features.
+- Selected top 11 features (e.g., `OrgId`, `IncidentId`, `AlertTitle`, `DetectorId`) to improve efficiency.
 
-Feature Interpretation using SHAP (SHapley Additive exPlanations) to identify influential features.
+### 5. ✅ Final Evaluation
+- Achieved **Macro-F1 Score**:
+  - Validation Set: **0.91**
+  - Test Set: **0.90**
+- Balanced precision and recall across all three classes.
+- Saved the final model using `joblib` for easy deployment.
 
-Comparison across models to choose the best performer for deployment.
+---
 
-🚀 Deployment-Ready Pipeline
-Final model exported using joblib for seamless deployment.
+## 📁 Dataset Details
 
-Code modularized for easy integration into SOC workflows or SIEM platforms.
+- **Source**: Microsoft GUIDE (via Kaggle)
+- **Files**: 
+  - `GUIDE_train.csv` (2.43 GB)
+  - `GUIDE_test.csv` (1.09 GB)
+- **Scope**:
+  - Over 13 million evidence entries
+  - Includes 1M+ labeled incidents across 6,100+ organizations
+  - 441 MITRE ATT&CK techniques tracked
 
-💼 Real-World Applications
-Security Operation Centers (SOCs)
-Automates incident triage to accelerate identification and response to threats.
+---
 
-Incident Response Systems
-Provides automated suggestions for appropriate remediation actions.
+## 📦 Technologies Used
 
-Threat Intelligence
-Leverages past evidence to improve detection and alert quality.
+| Category           | Tools & Libraries                                 |
+|--------------------|--------------------------------------------------|
+| Programming        | Python                                           |
+| Data Handling      | pandas, numpy                                    |
+| Visualization      | seaborn, matplotlib                              |
+| Machine Learning   | scikit-learn, XGBoost, LightGBM, imbalanced-learn |
+| Model Tuning       | RandomizedSearchCV                               |
+| Feature Analysis   | SHAP                                             |
+| Model Persistence  | joblib                                           |
 
-Enterprise Security
-Reduces alert fatigue by filtering false positives and prioritizing critical incidents.
+---
 
-📊 Dataset Overview
-Source: [Microsoft GUIDE Dataset (Kaggle)]
+## 🚀 Use Cases
 
-Files: GUIDE_train.csv (2.43 GB), GUIDE_test.csv (1.09 GB)
+- **Security Operations Centers (SOCs)**: Automate triage and prioritize high-risk incidents.
+- **Incident Response**: Suggest appropriate remediation strategies.
+- **Threat Intelligence**: Improve detection using historical patterns.
+- **Enterprise Security**: Reduce analyst fatigue by minimizing false positives.
 
-Structure: Evidence-level, Alert-level, and Incident-level data
-
-Labels: Incident classification - TP, BP, FP
-
-Volume: Over 13 million evidence entries across 6,100+ organizations
-
-Processed Files: traindata_processed.csv, testdata_processed.csv
-
-📁 Project Structure
-Data Cleaning & Preprocessing
-Null removal, encoding, time-based feature extraction
-
-Exploratory Data Analysis (EDA)
-Visualized trends by hour/day/month and examined label imbalance
-
-Model Training
-Benchmarked multiple models, handled imbalance, evaluated performance
-
-Hyperparameter Tuning
-Optimized XGBoost using RandomizedSearchCV
-
-SHAP Feature Importance
-Selected top predictors to enhance performance and reduce training time
-
-Final Model Evaluation
-Achieved strong generalization on unseen test data
-
-✅ Results
-Best Performing Model: XGBoost (tuned, without SMOTE)
-
-Macro-F1 Score:
-
-Validation: 0.91
-
-Test: 0.90
-
-Top Features: OrgId, IncidentId, AlertTitle, DetectorId, etc.
-
-Model Characteristics:
-
-Balanced performance across all three classes (TP, BP, FP)
-
-Efficient and explainable predictions for security analysts
-
-🛠️ Tech Stack
-Category	Tools / Libraries
-Language	Python
-Data Handling	pandas, numpy
-Visualization	matplotlib, seaborn
-ML Models	scikit-learn, XGBoost, LightGBM, RandomForest
-Imbalance	imbalanced-learn (SMOTE)
-Feature Analysis	SHAP
-Model Persistence	joblib
+---
